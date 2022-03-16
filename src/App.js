@@ -1,24 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Switch, Redirect } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "axios";
+
+import * as Comp from "./components";
+import { PrivateRoute, PublicRoute } from "./components";
+
+import "react-toastify/dist/ReactToastify.css";
+import "./App.css";
+
+axios.defaults.baseURL = process.env.PIAR_API_URL;
+axios.defaults.headers.post["Content-Type"] = "application/json";
+
+toast.configure();
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Switch>
+        <PublicRoute restricted={true} component={Comp.SignIn} path="/" exact />
+        {/* <PublicRoute
+          restricted={false}
+          component={Comp.Home}
+          path="/home"
+          exact
+        /> */}
+        <PublicRoute
+          restricted={true}
+          component={Comp.SignIn}
+          path="/sign-in"
+          exact
+        />
+        <PublicRoute
+          restricted={true}
+          component={Comp.SignUp}
+          path="/sign-up"
+          exact
+        />
+        <PrivateRoute component={Comp.Stations} path="/stations" exact />
+        <PrivateRoute component={Comp.Users} path="/users" exact />
+        <Redirect to="/stations" />
+      </Switch>
+    </BrowserRouter>
   );
 }
 
