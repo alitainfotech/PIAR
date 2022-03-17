@@ -105,14 +105,12 @@ const Stations = () => {
         )
         .then(({ data }) => {
           loadData();
-          setAddModal(false);
-          setValidated(false);
+          closeModal();
           toast.success("Station updated successfully!");
         })
         .catch((error) => {
           console.log(">Err: ", error);
-          setAddModal(false);
-          setValidated(false);
+          closeModal();
 
           const { data } = (error && error.response) || {};
           const errMsg = (data && data.error) || "Error, updating station!";
@@ -123,14 +121,12 @@ const Stations = () => {
         .post(`${process.env.REACT_APP_PIAR_API_URL}stations`, data, headers)
         .then(({ data }) => {
           loadData();
-          setAddModal(false);
-          setValidated(false);
+          closeModal();
           toast.success("Station created successfully!");
         })
         .catch((error) => {
           console.log(">Err: ", error);
-          setAddModal(false);
-          setValidated(false);
+          closeModal();
 
           const { data } = (error && error.response) || {};
           const errMsg = (data && data.error) || "Error, creating station!";
@@ -165,61 +161,63 @@ const Stations = () => {
         Add Station
       </Button>
 
-      {isLoading ? (
-        <div className="text-center p-5">
-          <Spinner animation="border" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </Spinner>
-        </div>
-      ) : (
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Station Name</th>
-              <th>Comment</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
+      <div className="pb-2">
+        {isLoading ? (
+          <div className="text-center p-5">
+            <Spinner animation="border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </Spinner>
+          </div>
+        ) : (
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Station Name</th>
+                <th>Comment</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
 
-          <tbody>
-            {stationList.length ? (
-              stationList.map((data, index) => (
-                <tr key={data.id}>
-                  <td>{index + 1}</td>
-                  <td>{data.name}</td>
-                  <td>{data.comment}</td>
-                  <td>
-                    <Button
-                      variant="primary"
-                      type="button"
-                      size="sm"
-                      onClick={() => updateStation(data.id)}
-                    >
-                      Update
-                    </Button>{" "}
-                    <Button
-                      variant="danger"
-                      type="button"
-                      size="sm"
-                      onClick={() => deleteStation(data.id)}
-                    >
-                      Delete
-                    </Button>
+            <tbody>
+              {stationList.length ? (
+                stationList.map((data, index) => (
+                  <tr key={data.id}>
+                    <td>{index + 1}</td>
+                    <td>{data.name}</td>
+                    <td>{data.comment}</td>
+                    <td>
+                      <Button
+                        variant="primary"
+                        type="button"
+                        size="sm"
+                        onClick={() => updateStation(data.id)}
+                      >
+                        Update
+                      </Button>{" "}
+                      <Button
+                        variant="danger"
+                        type="button"
+                        size="sm"
+                        onClick={() => deleteStation(data.id)}
+                      >
+                        Delete
+                      </Button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td className="text-center" colSpan={4}>
+                    No Records Found!
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td className="text-center" colSpan={4}>
-                  No Records Found!
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </Table>
-      )}
-
+              )}
+            </tbody>
+          </Table>
+        )}
+      </div>
+      
       <Modal show={addModal} onHide={closeModal}>
         <ModalBody>
           <Form noValidate validated={validated} onSubmit={handleSubmit}>

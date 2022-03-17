@@ -13,7 +13,7 @@ const PrivateRoute = ({ component: Component, history, ...rest }) => {
         isLogin() ? (
           <div>
             <Navbar fixed="top">
-              <Container>
+              <Container className="p-0">
                 <Navbar.Brand>
                   <Link className="nav-link" to={"/stations"}>
                     PIAR
