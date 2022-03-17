@@ -12,22 +12,24 @@ const PrivateRoute = ({ component: Component, history, ...rest }) => {
       render={(props) =>
         isLogin() ? (
           <div>
-            <Navbar fixed="top">
+            <Navbar expand="md" fixed="top">
               <Container className="p-0">
                 <Navbar.Brand>
-                  <Link className="nav-link" to={"/stations"}>
+                  <Link className="nav-link pl-1" to={"/stations"}>
                     PIAR
                   </Link>
                 </Navbar.Brand>
-                <Nav className="me-auto">
-                  <Link className="nav-link" to={"/stations"}>
-                    Stations
-                  </Link>
-                  <Link className="nav-link" to={"/users"}>
-                    Users
-                  </Link>
-                </Nav>
-                <Navbar.Collapse className="justify-content-end">
+                <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                <Navbar.Collapse id="basic-navbar-nav">
+                  <Nav className="me-auto">
+                    <Link className="nav-link" to={"/stations"}>
+                      Stations
+                    </Link>
+                    <Link className="nav-link" to={"/users"}>
+                      Users
+                    </Link>
+                  </Nav>
+
                   <Button
                     variant="link"
                     onClick={() => {

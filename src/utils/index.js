@@ -19,3 +19,12 @@ export const isLogin = () => {
 export const getToken = () => {
   return localStorage.getItem(TOKEN_KEY);
 };
+
+export const filteredData = (data = {}, allowed = []) => {
+  return Object.keys(data)
+    .filter((key) => allowed.includes(key))
+    .reduce((obj, key) => {
+      obj[key] = data[key];
+      return obj;
+    }, {});
+};

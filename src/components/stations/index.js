@@ -10,7 +10,7 @@ import {
 import axios from "axios";
 import { toast } from "react-toastify";
 
-import { getToken } from "../../utils";
+import { filteredData, getToken } from "../../utils";
 
 const defStationData = {
   name: "",
@@ -81,46 +81,37 @@ const Stations = () => {
     const data = { ...station };
 
     if (data.id) {
-      const allowed = Object.keys(defStationData);
-
-      const filteredData = Object.keys(data)
-        .filter((key) => allowed.includes(key))
-        .reduce((obj, key) => {
-          obj[key] = data[key];
-          return obj;
-        }, {});
+      const finalData = filteredData(data, Object.keys(defStationData));
 
       axios
-        .patch(`stations/${data.id}`, filteredData, headers)
+        .patch(`stations/${data.id}`, finalData, headers)
         .then(({ data }) => {
           loadData();
-          closeModal();
           toast.success("Station updated successfully!");
         })
         .catch((error) => {
           console.log(">Err: ", error);
-          closeModal();
 
           const { data } = (error && error.response) || {};
           const errMsg = (data && data.error) || "Error, updating station!";
           toast.error(errMsg);
-        });
+        })
+        .finally(() => closeModal());
     } else {
       axios
         .post(`stations`, data, headers)
         .then(({ data }) => {
           loadData();
-          closeModal();
           toast.success("Station created successfully!");
         })
         .catch((error) => {
           console.log(">Err: ", error);
-          closeModal();
 
           const { data } = (error && error.response) || {};
           const errMsg = (data && data.error) || "Error, creating station!";
           toast.error(errMsg);
-        });
+        })
+        .finally(() => closeModal());
     }
   };
 

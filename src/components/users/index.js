@@ -10,7 +10,7 @@ import {
 import axios from "axios";
 import { toast } from "react-toastify";
 
-import { getToken } from "../../utils";
+import { filteredData, getToken } from "../../utils";
 
 const defUserData = {
   name: "",
@@ -39,10 +39,7 @@ const Users = () => {
     setIsLoading(true);
 
     axios
-      .all([
-        axios.get(`users/me`, headers),
-        axios.get(`users`, headers),
-      ])
+      .all([axios.get(`users/me`, headers), axios.get(`users`, headers)])
       .then(
         axios.spread((...responses) => {
           setIsLoading(false);
@@ -96,50 +93,41 @@ const Users = () => {
     const data = { ...user };
 
     if (data.id) {
-      const allowed = Object.keys(defUserData);
-
-      const filteredData = Object.keys(data)
-        .filter((key) => allowed.includes(key) && data[key].trim() !== "")
-        .reduce((obj, key) => {
-          obj[key] = data[key];
-          return obj;
-        }, {});
+      const finalData = filteredData(data, Object.keys(defUserData));
 
       axios
         .patch(
           `${process.env.REACT_APP_PIAR_API_URL}users/${data.id}`,
-          filteredData,
+          finalData,
           headers
         )
         .then(({ data }) => {
           loadData();
-          closeModal();
           toast.success("User updated successfully!");
         })
         .catch((error) => {
           console.log(">Err: ", error);
-          closeModal();
 
           const { data } = (error && error.response) || {};
           const errMsg = (data && data.error) || "Error, updating user!";
           toast.error(errMsg);
-        });
+        })
+        .finally(() => closeModal());
     } else {
       axios
         .post(`users`, data, headers)
         .then(({ data }) => {
           loadData();
-          closeModal();
           toast.success("User created successfully!");
         })
         .catch((error) => {
           console.log(">Err: ", error);
-          closeModal();
 
           const { data } = (error && error.response) || {};
           const errMsg = (data && data.error) || "Error, creating user!";
           toast.error(errMsg);
-        });
+        })
+        .finally(() => closeModal());
     }
   };
 
@@ -225,7 +213,7 @@ const Users = () => {
           </Table>
         )}
       </div>
-      
+
       <Modal show={addModal} onHide={closeModal}>
         <ModalBody>
           <Form noValidate validated={validated} onSubmit={handleSubmit}>

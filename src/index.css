@@ -85,3 +85,22 @@ html,
 .forgot-password a {
   color: #167bff;
 }
+
+.navbar-brand .nav-link {
+  padding-left: 0.75rem;
+}
+
+.navbar .navbar-toggler {
+  margin-right: 0.75rem;
+}
+
+@media (max-width: 768px) {
+  .navbar-collapse .navbar-nav,
+  .collapsing .navbar-nav {
+    padding-left: 0.75rem;
+  }
+
+  .navbar-collapse .btn-link {
+    padding-left: 0.75rem;
+  }
+}
