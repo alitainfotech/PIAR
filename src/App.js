@@ -8,7 +8,7 @@ import { PrivateRoute, PublicRoute } from "./components";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 
-axios.defaults.baseURL = process.env.PIAR_API_URL;
+axios.defaults.baseURL = process.env.REACT_APP_PIAR_API_URL;
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
 toast.configure();

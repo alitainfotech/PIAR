@@ -30,14 +30,13 @@ const SignUp = (props) => {
     const data = { ...user };
 
     axios
-      .post(`${process.env.REACT_APP_PIAR_API_URL}users`, data)
+      .post(`users`, data)
       .then(({ data }) => {
         props.history.push("/sign-in");
         toast.success("Account created successfully!");
       })
       .catch((error) => {
         console.log(">Err: ", error);
-        const { data } = error.response;
         setUser({
           ...user,
           login: "",
@@ -45,6 +44,7 @@ const SignUp = (props) => {
         });
         setValidated(false);
 
+        const { data } = (error && error.response) || {};
         const errMsg = (data && data.error) || "Error, account creation!";
         toast.error(errMsg);
       });

@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Form, Button } from "react-bootstrap";
-
-import axios from "axios";
+import { Button, Form } from "react-bootstrap";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 import { login } from "../utils";
 
@@ -30,7 +29,7 @@ const SignIn = (props) => {
     const data = { ...user };
 
     axios
-      .post(`${process.env.REACT_APP_PIAR_API_URL}users/auth`, data)
+      .post(`users/auth`, data)
       .then(({ data }) => {
         const { user_jwt } = data;
         login(user_jwt);

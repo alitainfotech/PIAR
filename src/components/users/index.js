@@ -40,8 +40,8 @@ const Users = () => {
 
     axios
       .all([
-        axios.get(`${process.env.REACT_APP_PIAR_API_URL}users/me`, headers),
-        axios.get(`${process.env.REACT_APP_PIAR_API_URL}users`, headers),
+        axios.get(`users/me`, headers),
+        axios.get(`users`, headers),
       ])
       .then(
         axios.spread((...responses) => {
@@ -75,7 +75,7 @@ const Users = () => {
     if (!window.confirm("Sure to delete?")) return;
 
     axios
-      .delete(`${process.env.REACT_APP_PIAR_API_URL}users/${userId}`, headers)
+      .delete(`users/${userId}`, headers)
       .then(({ data }) => {
         loadData();
         toast.success("User deleted successfully!");
@@ -126,7 +126,7 @@ const Users = () => {
         });
     } else {
       axios
-        .post(`${process.env.REACT_APP_PIAR_API_URL}users`, data, headers)
+        .post(`users`, data, headers)
         .then(({ data }) => {
           loadData();
           closeModal();

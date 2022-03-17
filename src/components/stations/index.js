@@ -36,11 +36,7 @@ const Stations = () => {
     setIsLoading(true);
 
     axios
-      .get(`${process.env.REACT_APP_PIAR_API_URL}stations`, {
-        headers: {
-          "user-jwt": token,
-        },
-      })
+      .get(`stations`, headers)
       .then(({ data }) => {
         setStationList(data);
         setIsLoading(false);
@@ -64,10 +60,7 @@ const Stations = () => {
     if (!window.confirm("Sure to delete?")) return;
 
     axios
-      .delete(
-        `${process.env.REACT_APP_PIAR_API_URL}stations/${stationId}`,
-        headers
-      )
+      .delete(`stations/${stationId}`, headers)
       .then(({ data }) => {
         loadData();
         toast.success("Station deleted successfully!");
@@ -98,11 +91,7 @@ const Stations = () => {
         }, {});
 
       axios
-        .patch(
-          `${process.env.REACT_APP_PIAR_API_URL}stations/${data.id}`,
-          filteredData,
-          headers
-        )
+        .patch(`stations/${data.id}`, filteredData, headers)
         .then(({ data }) => {
           loadData();
           closeModal();
@@ -118,7 +107,7 @@ const Stations = () => {
         });
     } else {
       axios
-        .post(`${process.env.REACT_APP_PIAR_API_URL}stations`, data, headers)
+        .post(`stations`, data, headers)
         .then(({ data }) => {
           loadData();
           closeModal();
@@ -217,7 +206,7 @@ const Stations = () => {
           </Table>
         )}
       </div>
-      
+
       <Modal show={addModal} onHide={closeModal}>
         <ModalBody>
           <Form noValidate validated={validated} onSubmit={handleSubmit}>
